@@ -16,7 +16,7 @@
         pgrole: 'xteve'
         intport: '34400'
         extport: '34400'
-        image: 'alturismo/xteve'
+        image: 'dnsforge/xteve'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -44,7 +44,8 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/home/xteve/xteve'
+          - '/opt/appdata/{{pgrole}}/xteve:/home/xteve/conf'
+          - '/opt/appdata/{{pgrole}}/guide2go:/home/xteve/guide2go/conf'
           - '/opt/appdata/{{pgrole}}/temp:/tmp/xteve'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/etc/localtime:/etc/localtime:ro'
