@@ -57,7 +57,8 @@
         image: '{{image}}'
         pull: yes
         published_ports:
-          - '{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '10.142.0.3{{extport}}:{{intport}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
