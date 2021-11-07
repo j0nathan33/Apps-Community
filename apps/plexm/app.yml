@@ -1,0 +1,147 @@
+#!/bin/bash
+#
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  Admin9705
+# URL:        https://pgblitz.com - http://github.pgblitz.com
+# GNU:        General Public License v3.0
+################################################################################
+# !!!!!!!!!!!!! REMINDER FIX PORTS FOR LOCAL/REMOTE from old
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'plex'
+        int1: '32400/tcp'
+        ext1: '32400'
+        int2: '3005/tcp'
+        ext2: '3005'
+        int3: '8324/tcp'
+        ext3: '8324'
+        int4: '32410/udp'
+        ext4: '32410'
+        int5: '32412/udp'
+        ext5: '32412'
+        int6: '32413/udp'
+        ext6: '32413'
+        int7: '32414/udp'
+        ext7: '32414'
+        int8: '33400/tcp'
+        ext8: '33400'
+        int9: '33443/tcp'
+        ext9: '33443'
+        int10: '33400/tcp'
+        ext10: '33400'
+        int11: '33443/tcp'
+        ext11: '33443'
+
+    # FACTS #######################################################################
+    - name: 'Plex Server Network Type'
+      shell: 'cat /pg/var/server.type'
+      register: servertype
+
+    - name: Register Claim Number
+      shell: 'cat /pg/var/plex.claim'
+      register: claim
+      when: servertype.stdout == "remote"
+
+    - name: Register Extension Type - Remote
+      shell: 'cat /pg/var/image.select'
+      register: imageselect
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Mandatory Core Role'
+      include_tasks: '/pg/apps/_core.yml'
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'true'
+          traefik.port: '{{int1}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain}}{{tldset}}'
+          traefik.frontend.headers.SSLHost: '{{domain}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/pg/tmp:/tmp'
+          - '/mnt:/mnt'
+          - '/pg/data/plex/database:/config'
+          - '/pg/transcodes:/transcode'
+          - '/dev/shm:/ram_transcode'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/etc/localtime:/etc/localtime:ro'
+          - '/pg/unity:/unity'
+          - '/pg:/pg'
+
+    ########################################## Secure Connections
+    - name: 'Secure Connections'
+      include_tasks: '/pg/apps/programs/plex/secure.yml'
+
+    ########################################## Other
+    - name: Check /dev/dri exists
+      stat:
+        path: '/dev/dri'
+      register: dev_dri
+
+    - name: Create Transcodes Directory
+      file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000'
+      with_items:
+        - /pg/transcodes
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Remote Plex'
+      include_tasks: '/pg/apps/programs/plex/remote.yml'
+      when: servertype.stdout == "remote"
+
+    - name: 'Local Plex'
+      include_tasks: '/pg/apps/programs/plex/local.yml'
+      when: servertype.stdout == "local"
+
+    ###################### Plex WebTools
+    - name: Check WebTools
+      stat:
+        path: '/pg/data/plex/database/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle'
+      register: webtools
+
+    - name: Create Basic Directories
+      file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000'
+      with_items:
+        - '/pg/data/plex/database/Library/Application Support/Plex Media Server/Plug-ins/WebTools.bundle'
+      when:
+        - webtools.stat.exists == False
+
+    - name: Installing WebTools
+      unarchive:
+        src: https://github.com/ukdtom/WebTools.bundle/releases/download/3.0.0/WebTools.bundle.zip
+        dest: /pg/data/plex/database/Library/Application Support/Plex Media Server/Plug-ins
+        keep_newer: no
+        owner: '1000'
+        group: '1000'
+        mode: 0775
+        copy: no
+      when:
+        - webtools.stat.exists == False
+
+    - name: Notify User
+      pause:
+        prompt: "\nWebTools Installed! [PRESS ENTER] to Continue"
+      when:
+        - webtools.stat.exists == False
+
+    - debug: msg="Final Notes - Remote Plex | IP Address {{ipaddress.stdout}} | Plex Type {{servertype.stdout}} | Token {{claim.stdout}}"
+      when: servertype.stdout == "remote"
+
+    - debug: msg="Final Notes - Local Plex | IP Address {{ipaddress.stdout}} | Plex Type {{servertype.stdout}}"
+      when: servertype.stdout == "local"
