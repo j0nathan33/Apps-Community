@@ -71,4 +71,4 @@ EOF
 # FUNCTIONS END ##############################################################
 
 question1
-#ansible-playbook /opt/communityapps/apps/plex/plexm.yml
+ansible-playbook /opt/communityapps/apps/plex/plexm.yml
