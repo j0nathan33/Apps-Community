@@ -73,4 +73,5 @@ EOF
 question1
 ansible-playbook /opt/communityapps/apps/plex/plexm.yml
 ansible-playbook /opt/communityapps/apps/plex/plexe.yml
-#ansible-playbook /opt/communityapps/apps/plex/plext.yml
+ansible-playbook /opt/communityapps/apps/plex/plext.yml
+ansible-playbook /opt/communityapps/apps/plex/plexp.yml
