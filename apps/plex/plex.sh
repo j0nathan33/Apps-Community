@@ -71,6 +71,43 @@ EOF
 # FUNCTIONS END ##############################################################
 
 question1
+mkdir -p /mnt/appdata/plexm
+mkdir -p /mnt/appdata/plext
+mkdir -p /mnt/appdata/plexe
+mkdir -p /mnt/appdata/plexp
+ln -s /mnt/appdata/plexm/ /opt/appdata/plexm
+chown -h ubuntu:ubuntu /opt/appdata/plexm
+ln -s /mnt/appdata/plext/ /opt/appdata/plext
+chown -h ubuntu:ubuntu /opt/appdata/plext
+ln -s /mnt/appdata/plexe/ /opt/appdata/plexe
+chown -h ubuntu:ubuntu /opt/appdata/plexe
+ln -s /mnt/appdata/plexp/ /opt/appdata/plexp
+chown -h ubuntu:ubuntu /opt/appdata/
+
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexm.tar . -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexe.tar . -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plext.tar . -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexp.tar . -P
+
+tar -C /opt/appdata/plexm -xvf plexm.tar
+tar -C /opt/appdata/plexe -xvf plexe.tar
+tar -C /opt/appdata/plext -xvf plext.tar
+tar -C /opt/appdata/plexp -xvf plexp.tar
+
+rm -rf plexm.tar
+rm -rf plexe.tar
+rm -rf plext.tar
+rm -rf plexp.tar
+
+chown -R 1000:1000 /opt/appdata/plexm
+chmod -R 775 "/opt/appdata/plexm"
+chown -R 1000:1000 /opt/appdata/plexe
+chmod -R 775 "/opt/appdata/plexe"
+chown -R 1000:1000 /opt/appdata/plext
+chmod -R 775 "/opt/appdata/plext"
+chown -R 1000:1000 /opt/appdata/plexp
+chmod -R 775 "/opt/appdata/plexp"
+
 ansible-playbook /opt/communityapps/apps/plex/plexm.yml
 ansible-playbook /opt/communityapps/apps/plex/plexe.yml
 ansible-playbook /opt/communityapps/apps/plex/plext.yml
