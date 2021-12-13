@@ -15,7 +15,7 @@
         pgrole: 'home-assistant'
         intport: '8123'
         extport: '8123'
-        image: 'homeassistant/armv7-hassio-supervisor:latest'
+        image: 'homeassistant/amd64-hassio-supervisor:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
