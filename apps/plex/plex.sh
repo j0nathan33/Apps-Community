@@ -75,6 +75,8 @@ mkdir -p /mnt/appdata/plexm
 mkdir -p /mnt/appdata/plext
 mkdir -p /mnt/appdata/plexe
 mkdir -p /mnt/appdata/plexp
+mkdir -p /mnt/dvr/TV
+mkdir -p /mnt/dvr/Movies
 ln -s /mnt/appdata/plexm/ /opt/appdata/plexm
 chown -h ubuntu:ubuntu /opt/appdata/plexm
 ln -s /mnt/appdata/plext/ /opt/appdata/plext
@@ -83,6 +85,8 @@ ln -s /mnt/appdata/plexe/ /opt/appdata/plexe
 chown -h ubuntu:ubuntu /opt/appdata/plexe
 ln -s /mnt/appdata/plexp/ /opt/appdata/plexp
 chown -h ubuntu:ubuntu /opt/appdata/
+chown -h ubuntu:ubuntu /mnt/dvr/TV
+chown -h ubuntu:ubuntu /mnt/dvr/Movies
 
 rclone copy /mnt/unionfs/plexguide/backup/gcp/plexm.tar . -P
 rclone copy /mnt/unionfs/plexguide/backup/gcp/plexe.tar . -P
