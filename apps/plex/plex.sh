@@ -91,7 +91,7 @@ chown -h ubuntu:ubuntu /mnt/dvr/Movies
 
 rclone copy /mnt/unionfs/plexguide/backup/gcp/plexe.tar /tmp/plexe.tar -P
 tar -C /opt/appdata/plexe -xvf /tmp/plexe.tar
-rm -rf plexe.tar
+rm -rf /tmp/plexe.tar
 chown -R 1000:1000 /opt/appdata/plexe
 chmod -R 775 "/opt/appdata/plexe"
 ansible-playbook /opt/communityapps/apps/plex/plexe.yml
@@ -105,9 +105,9 @@ tar -C /opt/appdata/plexm -xvf /tmp/plexm.tar
 tar -C /opt/appdata/plext -xvf /tmp/plext.tar
 tar -C /opt/appdata/plexp -xvf /tmp/plexp.tar
 
-rm -rf plexm.tar
-rm -rf plext.tar
-rm -rf plexp.tar
+rm -rf /tmp/plexm.tar
+rm -rf /tmp/plext.tar
+rm -rf /tmp/plexp.tar
 
 chown -R 1000:1000 /opt/appdata/plexm
 chmod -R 775 "/opt/appdata/plexm"
