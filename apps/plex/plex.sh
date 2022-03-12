@@ -88,15 +88,15 @@ chown -h ubuntu:ubuntu /opt/appdata/
 chown -h ubuntu:ubuntu /mnt/dvr/TV
 chown -h ubuntu:ubuntu /mnt/dvr/Movies
 
-rclone copy /mnt/unionfs/plexguide/backup/gcp/plexm.tar . -P
-rclone copy /mnt/unionfs/plexguide/backup/gcp/plexe.tar . -P
-rclone copy /mnt/unionfs/plexguide/backup/gcp/plext.tar . -P
-rclone copy /mnt/unionfs/plexguide/backup/gcp/plexp.tar . -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexm.tar /tmp/plexm.tar -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexe.tar /tmp/plexe.tar -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plext.tar /tmp/plext.tar -P
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexp.tar /tmp/plexp.tar -P
 
-tar -C /opt/appdata/plexm -xvf plexm.tar
-tar -C /opt/appdata/plexe -xvf plexe.tar
-tar -C /opt/appdata/plext -xvf plext.tar
-tar -C /opt/appdata/plexp -xvf plexp.tar
+tar -C /opt/appdata/plexm -xvf /tmp/plexm.tar
+tar -C /opt/appdata/plexe -xvf /tmp/plexe.tar
+tar -C /opt/appdata/plext -xvf /tmp/plext.tar
+tar -C /opt/appdata/plexp -xvf /tmp/plexp.tar
 
 rm -rf plexm.tar
 rm -rf plexe.tar
