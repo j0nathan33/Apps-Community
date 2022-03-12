@@ -88,31 +88,34 @@ chown -h ubuntu:ubuntu /opt/appdata/
 chown -h ubuntu:ubuntu /mnt/dvr/TV
 chown -h ubuntu:ubuntu /mnt/dvr/Movies
 
-rclone copy /mnt/unionfs/plexguide/backup/gcp/plexm.tar /tmp/plexm.tar -P
+
 rclone copy /mnt/unionfs/plexguide/backup/gcp/plexe.tar /tmp/plexe.tar -P
+tar -C /opt/appdata/plexe -xvf /tmp/plexe.tar
+rm -rf plexe.tar
+chown -R 1000:1000 /opt/appdata/plexe
+chmod -R 775 "/opt/appdata/plexe"
+ansible-playbook /opt/communityapps/apps/plex/plexe.yml
+
+
+rclone copy /mnt/unionfs/plexguide/backup/gcp/plexm.tar /tmp/plexm.tar -P
 rclone copy /mnt/unionfs/plexguide/backup/gcp/plext.tar /tmp/plext.tar -P
 rclone copy /mnt/unionfs/plexguide/backup/gcp/plexp.tar /tmp/plexp.tar -P
 
 tar -C /opt/appdata/plexm -xvf /tmp/plexm.tar
-tar -C /opt/appdata/plexe -xvf /tmp/plexe.tar
 tar -C /opt/appdata/plext -xvf /tmp/plext.tar
 tar -C /opt/appdata/plexp -xvf /tmp/plexp.tar
 
 rm -rf plexm.tar
-rm -rf plexe.tar
 rm -rf plext.tar
 rm -rf plexp.tar
 
 chown -R 1000:1000 /opt/appdata/plexm
 chmod -R 775 "/opt/appdata/plexm"
-chown -R 1000:1000 /opt/appdata/plexe
-chmod -R 775 "/opt/appdata/plexe"
 chown -R 1000:1000 /opt/appdata/plext
 chmod -R 775 "/opt/appdata/plext"
 chown -R 1000:1000 /opt/appdata/plexp
 chmod -R 775 "/opt/appdata/plexp"
 
 ansible-playbook /opt/communityapps/apps/plex/plexm.yml
-ansible-playbook /opt/communityapps/apps/plex/plexe.yml
 ansible-playbook /opt/communityapps/apps/plex/plext.yml
 ansible-playbook /opt/communityapps/apps/plex/plexp.yml
