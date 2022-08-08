@@ -43,9 +43,10 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}/Documents:/home/Tdarr/Documents/Tdarr'
-          - '/opt/appdata/{{pgrole}}/Database:/var/lib/mongodb'
-          - '/opt/appdata/{{pgrole}}/Media:/home/Tdarr/Media'
+          - '/opt/appdata/{{pgrole}}/server:/app/server'
+          - '/opt/appdata/{{pgrole}}/configs:/app/configs'
+          - '/opt/appdata/{{pgrole}}/logs:/app/logs'
+          - '/transcode_cache:/temp'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
           
