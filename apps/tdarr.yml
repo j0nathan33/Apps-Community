@@ -15,7 +15,7 @@
         pgrole: 'tdarr'
         intport: '8265'
         extport: '8265'
-        image: 'haveagitgat/tdarr_aio:latest'
+        image: 'haveagitgat/tdarr:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
