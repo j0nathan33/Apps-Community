@@ -12,7 +12,7 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'mosquitto'
+        pgrole: 'pai'
         image: 'paradoxalarminterface/pai:latest'
 
     # CORE (MANDATORY) ############################################################
