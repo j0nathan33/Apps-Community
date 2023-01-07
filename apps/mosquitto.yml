@@ -46,7 +46,9 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/mosquitto'
+          - '/opt/appdata/{{pgrole}}/data:/mosquitto/data'
+          - '/opt/appdata/{{pgrole}}/config:/mosquitto/config'
+          - '/opt/appdata/{{pgrole}}/log:/mosquitto/log'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
