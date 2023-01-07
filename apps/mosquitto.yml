@@ -15,6 +15,8 @@
         pgrole: 'mosquitto'
         intport: '1883/tcp'
         extport: '1883'
+        intport2: '9001/tcp'
+        extport2: '9001'
         image: 'eclipse-mosquitto:latest'
 
     # CORE (MANDATORY) ############################################################
