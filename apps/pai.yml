@@ -23,7 +23,7 @@
     - name: 'Adding Traefik'
       set_fact:
         pg_labels:
-          traefik.enable: 'true'
+          traefik.enable: 'false'
           traefik.tags: 'frontend'
           traefik.frontend.passHostHeader: 'true'
           traefik.backend: '{{pgrole}}'
