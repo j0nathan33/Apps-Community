@@ -25,6 +25,8 @@
         extport5: '8443'
         intport6: '8880/tcp'
         extport6: '8880'
+        intport7: '8080/tcp'
+        extport7: '8080'
         image: 'linuxserver/unifi-controller:latest'
 
     # CORE (MANDATORY) ############################################################
@@ -76,6 +78,7 @@
           - '{{extport4}}:{{intport4}}'
           - '{{extport5}}:{{intport5}}'
           - '{{extport6}}:{{intport6}}'
+          - '{{extport7}}:{{intport7}}'
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: always
